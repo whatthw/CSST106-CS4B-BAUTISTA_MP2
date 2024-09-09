@@ -7,8 +7,8 @@ Scaling and rotation are common image transformations in computer vision, often 
 Scaling (Resizing)
 Scaling changes the size of an image. In OpenCV, you can use the cv2.resize() function.
 
-python
-Copy code
+``python
+
 import cv2
 
 # Load an image
