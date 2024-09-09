@@ -103,7 +103,8 @@ image = cv2.cvtColor(np.array(image),cv2.COLOR_RGB2BGR)
 
 display_image(image, "Original Image")
 ```
-![demo2](https://github.com/user-attachments/assets/b548fa7d-9136-46d4-aa55-22181f0f2b36)
+![nemo](https://github.com/user-attachments/assets/197e022e-cded-43b3-ae49-5629f71eabbc)
+
 
 ### Exercise 1: Scaling and Rotation 
 ``` python
@@ -125,7 +126,8 @@ display_image(scaled_image, "Scaled Image")
 rotated_image = rotate_image(image, 45)
 display_image(rotated_image, "Rotated Image")
 ```
-![copy](https://github.com/user-attachments/assets/c1945346-8fac-4e5b-bb84-e09154358aba)
+![copy](https://github.com/user-attachments/assets/f11542dd-c5d9-4a32-b96d-d18c32f63d7a)
+
 
 ### Exercise 2: Blurring  Techniques
 ``` python
@@ -138,12 +140,14 @@ display_image(median_blur, "Median Blur")
 bilateral_filter = cv2.bilateralFilter(image,25, 85, 85)
 display_image(bilateral_filter, "Bilateral Filter")
 ```
-![copy2](https://github.com/user-attachments/assets/c824221f-c14f-45bf-8642-44bbd647ef83)
+![copy2](https://github.com/user-attachments/assets/8e218270-44f2-4319-a9f8-f86ece6ebf50)
+
 
 ### Exercise 3: Edge Detection using Canny 
 ``` python
 edge = cv2.Canny(image, 100, 200)
 display_image(edge, "Edge Detection")
 ```
-![copy3](https://github.com/user-attachments/assets/4e14511d-e95c-42f7-bbfb-33edf4bc37d5)
+![copy3](https://github.com/user-attachments/assets/627773e8-79e1-4c4c-ba8f-136a6573f8df)
+
 
