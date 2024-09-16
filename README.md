@@ -209,6 +209,7 @@ processed_image = process_image(image, actions)
 display_images(image, processed_image, "Original Image", f"Processed Image ({', '.join(actions)})")
 
 ```
+![Screenshot 2024-09-16 223043](https://github.com/user-attachments/assets/504734a9-8e59-45e9-8dab-8662a4b0cc66)
 
 
 ### Exercise 5: Comparison Of Filtering Techniques
@@ -235,3 +236,4 @@ plt.imshow(cv2.cvtColor(bilateral_filter, cv2.COLOR_BGR2RGB))
 plt.title("Bilateral Filter")
 plt.show()
 ```
+![5](https://github.com/user-attachments/assets/6c6daeea-9bbe-4b37-9c47-7b7097de7df4)
