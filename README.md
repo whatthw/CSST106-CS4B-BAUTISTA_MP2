@@ -150,4 +150,88 @@ display_image(edge, "Edge Detection")
 ```
 ![copy3](https://github.com/user-attachments/assets/627773e8-79e1-4c4c-ba8f-136a6573f8df)
 
+### Exercise 4: Basic Image Process (Interactive)
+``` python
+ def scale_image(img, scale_factor):
+    height, width = img.shape[:2]
+    return cv2.resize(img, (int(width * scale_factor), int(height * scale_factor)), interpolation=cv2.INTER_LINEAR)
 
+def rotate_image(image, angle):
+    height, width = image.shape[:2]
+    center = (width // 2, height // 2)
+    matrix = cv2.getRotationMatrix2D(center, angle, 1)
+    return cv2.warpAffine(image, matrix, (width, height))
+
+def process_image(img, actions):
+    processed_img = img.copy()
+    
+    for action in actions:
+       
+        action = action.lower().strip()
+        
+        if action == 'scale':
+            processed_img = scale_image(processed_img, 0.5)
+        elif action == 'rotate':
+            processed_img = rotate_image(processed_img, 45)
+        elif action == 'gaussian_blur':
+            processed_img = cv2.GaussianBlur(processed_img, (5, 5), 0)
+        elif action == 'median_blur':
+            processed_img = cv2.medianBlur(processed_img, 5)
+        elif action == 'canny':
+            processed_img = cv2.Canny(processed_img, 100, 200)
+    
+    return processed_img
+
+def display_images(original, processed, original_title, processed_title):
+    plt.figure(figsize=(10, 5))
+
+   # Show Original Image
+    plt.subplot(1, 2, 1)
+    plt.imshow(cv2.cvtColor(original, cv2.COLOR_BGR2RGB))
+    plt.title(original_title)
+    plt.axis('off')
+
+    # Show Process Image 
+    plt.subplot(1, 2, 2)
+    plt.title(processed_title)
+    if processed.ndim == 2:
+        plt.imshow(processed, cmap='gray')
+    else:
+        plt.imshow(cv2.cvtColor(processed, cv2.COLOR_BGR2RGB))
+    plt.axis('off')
+
+    plt.show()
+# Assuming `image` is already loaded
+action_input = input("Enter actions (e.g., scale, rotate, gaussian_blur, median_blur, canny) separated by commas: ")
+actions = action_input.split(',')
+
+processed_image = process_image(image, actions)
+display_images(image, processed_image, "Original Image", f"Processed Image ({', '.join(actions)})")
+
+```
+
+
+### Exercise 5: Comparison Of Filtering Techniques
+
+``` python
+# Applying Gaussian, Median, and Bilateral filters
+gaussian_blur = cv2.GaussianBlur(image, (5, 5), 0)
+median_blur = cv2.medianBlur(image, 5)
+bilateral_filter = cv2.bilateralFilter(image, 9, 75, 75)
+"""
+cv2.bilateralFilter(): This filter smooths the image while keeping edges sharp, unlike
+Gaussian or median filters. It’s useful for reducing noise while preserving details.
+"""
+# Display the results for comparison
+plt.figure(figsize=(10, 5))
+plt.subplot(1, 3, 1)
+plt.imshow(cv2.cvtColor(gaussian_blur, cv2.COLOR_BGR2RGB))
+plt.title("Gaussian Blur")
+plt.subplot(1, 3, 2)
+plt.imshow(cv2.cvtColor(median_blur, cv2.COLOR_BGR2RGB))
+plt.title("Median Blur")
+plt.subplot(1, 3, 3)
+plt.imshow(cv2.cvtColor(bilateral_filter, cv2.COLOR_BGR2RGB))
+plt.title("Bilateral Filter")
+plt.show()
+```
