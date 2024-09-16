@@ -237,3 +237,85 @@ plt.title("Bilateral Filter")
 plt.show()
 ```
 ![5](https://github.com/user-attachments/assets/6c6daeea-9bbe-4b37-9c47-7b7097de7df4)
+
+
+
+### Final Out-Put
+``` python
+def apply_blurring_techniques(img):
+
+    gaussian_blur = cv2.GaussianBlur(img, (5, 5), 0)
+    median_blur = cv2.medianBlur(img, 5)
+    bilateral_filter = cv2.bilateralFilter(img, 9, 75, 75)
+    box_filter = cv2.blur(img, (5, 5))
+
+    kernel_size = 15
+    kernel_motion_blur = np.zeros((kernel_size, kernel_size))
+    kernel_motion_blur[int((kernel_size - 1)/2), :] = np.ones(kernel_size)
+    kernel_motion_blur = kernel_motion_blur / kernel_size
+    motion_blur = cv2.filter2D(img, -1, kernel_motion_blur)
+    
+    gaussian_for_unsharp = cv2.GaussianBlur(img, (9, 9), 10.0)
+    unsharp_mask = cv2.addWeighted(img, 1.5, gaussian_for_unsharp, -0.5, 0)
+    
+    return gaussian_blur, median_blur, bilateral_filter, box_filter, motion_blur, unsharp_mask
+
+def apply_edge_detection(img):
+
+
+    sobel_edge = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
+    laplacian_edge = cv2.Laplacian(img, cv2.CV_64F)
+    
+    kernel_prewitt_x = np.array([[1, 0, -1], [1, 0, -1], [1, 0, -1]])
+    kernel_prewitt_y = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
+    prewitt_edge_x = cv2.filter2D(img, -1, kernel_prewitt_x)
+    prewitt_edge_y = cv2.filter2D(img, -1, kernel_prewitt_y)
+    prewitt_edge = prewitt_edge_x + prewitt_edge_y
+    
+    canny_edge = cv2.Canny(img, 100, 200)
+    
+    return sobel_edge, laplacian_edge, prewitt_edge, canny_edge
+
+def plot_image_levels(original, blur_images, edge_images):
+
+    num_blurs = len(blur_images)
+    num_edges = len(edge_images[0])
+    fig, axes = plt.subplots(3, max(num_blurs, num_edges), figsize=(20, 15))
+    
+    # Plot the original image at the top center
+    axes[0, num_blurs//2].imshow(cv2.cvtColor(original, cv2.COLOR_BGR2RGB))
+    axes[0, num_blurs//2].set_title("Original Image")
+    axes[0, num_blurs//2].axis('off')
+
+    blur_titles = ['Gaussian Blur', 'Median Blur', 'Bilateral Filter', 'Box Filter', 'Motion Blur', 'Unsharp Mask']
+    edge_titles = ['Sobel Edge', 'Laplacian Edge', 'Prewitt Edge', 'Canny Edge']
+
+    for i, (blur_img, title) in enumerate(zip(blur_images, blur_titles)):
+        axes[1, i].imshow(cv2.cvtColor(blur_img, cv2.COLOR_BGR2RGB))
+        axes[1, i].set_title(title)
+        axes[1, i].axis('off')
+  
+    for i in range(num_blurs):
+          for j, (edge_img, title) in enumerate(zip(edge_images[i], edge_titles)):
+              axes[2, i].imshow(edge_img, cmap='gray')
+              # Set the title for each column with the edge detection technique name
+              axes[2, i].set_title(f"{title} ({blur_titles[i]})")
+              axes[2, i].axis('off')
+
+
+    plt.tight_layout()
+    plt.show()
+
+# Apply blurring techniques
+blurring_results = apply_blurring_techniques(image)
+
+# Apply edge detection on blurred images
+blurred_images = blurring_results
+edge_images = [apply_edge_detection(cv2.cvtColor(blur_img, cv2.COLOR_BGR2GRAY)) for blur_img in blurred_images]
+
+# Plot the images by level
+plot_image_levels(image, blurred_images, edge_images)
+
+```
+![5](https://github.com/user-attachments/assets/fc757c2e-cec0-44f3-825d-7e07c605b719)
+
